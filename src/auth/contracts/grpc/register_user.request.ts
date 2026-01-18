@@ -1,4 +1,4 @@
 export type {
-    RegisterUserRequest,
-    RegisterUserResponse,
+    RegisterUserRequest as RegisterUserGrpcRequest,
+    RegisterUserResponse as RegisterUserGrpcResponse,
 } from "../register_user";

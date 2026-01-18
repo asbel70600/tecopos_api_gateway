@@ -1,1 +1,4 @@
-export type { GetPublicKeyRequest, GetPublicKeyResponse } from "../public_key";
+export type {
+    GetPublicKeyRequest as GetPublicKeyGrpcRequest,
+    GetPublicKeyResponse as GetPublicKeyGrpcResponse,
+} from "../public_key";

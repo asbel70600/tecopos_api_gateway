@@ -1,8 +1,14 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import type { ClientGrpc } from "@nestjs/microservices";
-import { RegisterUserRequest } from "./contracts/register_user";
 import { AuthServicePort } from "./domain/auth_service.port";
-import { LoginRequest } from "./contracts/login";
+import {
+    RegisterUserGrpcRequest,
+    RegisterUserGrpcResponse,
+} from "./contracts/grpc/register_user.request";
+import {
+    LoginGrpcRequest,
+    LoginGrpcResponse,
+} from "./contracts/grpc/login.request";
 
 @Injectable()
 export class AuthServiceGrpcAdapter implements OnModuleInit, AuthServicePort {
@@ -15,11 +21,13 @@ export class AuthServiceGrpcAdapter implements OnModuleInit, AuthServicePort {
             this.client.getService<AuthServicePort>("AuthService");
     }
 
-    register(registerDto: RegisterUserRequest) {
+    register(
+        registerDto: RegisterUserGrpcRequest,
+    ): Promise<RegisterUserGrpcResponse> {
         return this.authService.register(registerDto);
     }
 
-    login(loginDto: LoginRequest) {
+    login(loginDto: LoginGrpcRequest): Promise<LoginGrpcResponse> {
         return this.authService.login(loginDto);
     }
 

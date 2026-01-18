@@ -1,1 +1,4 @@
-export type { LoginRequest, LoginResponse } from "../login";
+export type {
+    LoginRequest as LoginGrpcRequest,
+    LoginResponse as LoginGrpcResponse,
+} from "../login";
