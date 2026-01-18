@@ -16,6 +16,13 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
     constructor(private readonly authServiceGrpc: AuthServiceGrpcAdapter) {}
 
     async onModuleInit() {
+        await this.fetchPublicKeyWithRetry(5); // 5 retries
+    }
+
+    private async fetchPublicKeyWithRetry(
+        maxRetries: number,
+        currentRetry: number = 0,
+    ): Promise<void> {
         try {
             const response = await firstValueFrom(
                 from(this.authServiceGrpc.getPublicKey()),
@@ -23,9 +30,28 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
             this.publicKey = response.publicKey;
             console.log("Public key fetched successfully from SSO");
         } catch (error) {
-            console.error("Failed to fetch public key from SSO:", error);
-            throw error;
+            if (currentRetry >= maxRetries) {
+                console.error(
+                    `Failed to fetch public key after ${maxRetries} retries:`,
+                    error,
+                );
+                throw new Error("Could not fetch public key from SSO");
+            }
+
+            // Exponential backoff: 1s, 2s, 4s, 8s, 16s
+            const waitTime = Math.pow(2, currentRetry) * 1000;
+            console.warn(
+                `Failed to fetch public key (attempt ${currentRetry + 1}/${maxRetries}). ` +
+                    `Retrying in ${waitTime / 1000}s...`,
+            );
+
+            await this.sleep(waitTime);
+            return this.fetchPublicKeyWithRetry(maxRetries, currentRetry + 1);
         }
+    }
+
+    private sleep(ms: number): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -36,7 +62,7 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
             throw new UnauthorizedException("No token provided");
         }
 
-        const token = authHeader.substring(7); // Remove 'Bearer '
+        const token = authHeader.substring(7);
 
         if (!this.publicKey) {
             throw new UnauthorizedException("Public key not available");
@@ -47,7 +73,6 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
                 algorithms: ["RS256"],
             });
 
-            // Attach decoded user info to request
             request.user = decoded;
             return true;
         } catch (error) {
