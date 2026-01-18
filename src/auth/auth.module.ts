@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { AuthController } from "./auth.controller";
 import { AuthServiceGrpcAdapter } from "./auth.service";
 import { ClientsModule, Transport } from "@nestjs/microservices";
-import { join } from "path";
+import { join } from "node:path";
 
 @Module({
     imports: [

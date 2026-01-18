@@ -16,7 +16,7 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
     constructor(private readonly authServiceGrpc: AuthServiceGrpcAdapter) {}
 
     async onModuleInit() {
-        await this.fetchPublicKeyWithRetry(5); // 5 retries
+        await this.fetchPublicKeyWithRetry(8); // 5 retries
     }
 
     private async fetchPublicKeyWithRetry(
@@ -39,7 +39,7 @@ export class JwtAuthGuard implements CanActivate, OnModuleInit {
             }
 
             // Exponential backoff: 1s, 2s, 4s, 8s, 16s
-            const waitTime = Math.pow(2, currentRetry) * 1000;
+            const waitTime = 2 ** currentRetry * 1000;
             console.warn(
                 `Failed to fetch public key (attempt ${currentRetry + 1}/${maxRetries}). ` +
                     `Retrying in ${waitTime / 1000}s...`,
