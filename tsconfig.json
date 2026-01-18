@@ -24,7 +24,6 @@
         "noFallthroughCasesInSwitch": false,
         "strict": true,
         "noEmitOnError": true,
-        "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noPropertyAccessFromIndexSignature": true,
         "exactOptionalPropertyTypes": true
