@@ -1,5 +1,4 @@
-import { Controller, Post, Get, Body } from "@nestjs/common";
-import { GetPublicKeyResponse } from "./contracts/grpc/get_public_key";
+import { Controller, Post, Body } from "@nestjs/common";
 import {
     RegisterUserHTTPRequest,
     RegisterUserHTTPResponse,
@@ -9,6 +8,7 @@ import {
     LoginHTTPResponse,
 } from "./contracts/http/login.request";
 import { AuthServiceGrpcAdapter } from "./auth.service";
+// import { GetPublicKeyResponse } from "./contracts/public_key";
 
 @Controller("auth")
 export class AuthController {
@@ -26,8 +26,8 @@ export class AuthController {
         return this.authServiceGrpc.login(dto);
     }
 
-    @Get("public-key")
-    getPublicKey(): Promise<GetPublicKeyResponse> {
-        return this.authServiceGrpc.getPublicKey();
-    }
+    // @Get("public-key")
+    // getPublicKey(): Promise<GetPublicKeyResponse> {
+    //     return this.authServiceGrpc.getPublicKey();
+    // }
 }
