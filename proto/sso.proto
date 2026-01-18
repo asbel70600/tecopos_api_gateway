@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package sso;
+
+service AuthService {
+  rpc Register (RegisterUserRequest) returns (RegisterUserResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc GetPublicKey (GetPublicKeyRequest) returns (GetPublicKeyResponse);
+}
+
+message RegisterUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterUserResponse {
+  int32 id = 1;
+  string email = 2;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string token_type = 2;
+  int32 expires_in = 3;
+}
+
+message GetPublicKeyRequest {}
+
+message GetPublicKeyResponse {
+  string publicKey = 1;
+}
