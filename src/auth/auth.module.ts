@@ -12,7 +12,7 @@ import { join } from "path";
                 transport: Transport.GRPC,
                 options: {
                     package: "sso",
-                    protoPath: join(__dirname, "../../../proto/sso.proto"),
+                    protoPath: join(__dirname, "../proto/sso.proto"),
                     url: process.env["SSO_SERVICE_URL"] || "localhost:50051",
                 },
             },
