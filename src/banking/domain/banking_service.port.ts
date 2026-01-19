@@ -1,25 +1,5 @@
-import {
-    GetAccountsRequest,
-    GetAccountsResponse,
-    GetAccountByIdRequest,
-    GetAccountByIdResponse,
-} from "./bank_account";
-import {
-    GetOperationsRequest,
-    GetOperationsResponse,
-    CreateOperationRequest,
-    CreateOperationResponse,
-} from "./operation";
+import { GetAccountsRequest, GetAccountsResponse } from "./bank_account";
 
 export interface BankingServicePort {
-    getAccounts(request: GetAccountsRequest): Promise<GetAccountsResponse>;
-    getAccountById(
-        request: GetAccountByIdRequest,
-    ): Promise<GetAccountByIdResponse>;
-    getOperations(
-        request: GetOperationsRequest,
-    ): Promise<GetOperationsResponse>;
-    createOperation(
-        request: CreateOperationRequest,
-    ): Promise<CreateOperationResponse>;
+    GetAccounts(request: GetAccountsRequest): Promise<GetAccountsResponse>;
 }

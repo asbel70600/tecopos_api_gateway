@@ -4,15 +4,7 @@ import { BankingServicePort } from "./domain/banking_service.port";
 import {
     GetAccountsGrpcRequest,
     GetAccountsGrpcResponse,
-    GetAccountByIdGrpcRequest,
-    GetAccountByIdGrpcResponse,
 } from "./contracts/grpc/bank_account";
-import {
-    GetOperationsGrpcRequest,
-    GetOperationsGrpcResponse,
-    CreateOperationGrpcRequest,
-    CreateOperationGrpcResponse,
-} from "./contracts/grpc/operation";
 
 @Injectable()
 export class BankingServiceGrpcAdapter
@@ -27,27 +19,9 @@ export class BankingServiceGrpcAdapter
             this.client.getService<BankingServicePort>("BankingService");
     }
 
-    getAccounts(
+    GetAccounts(
         request: GetAccountsGrpcRequest,
     ): Promise<GetAccountsGrpcResponse> {
-        return this.bankingService.getAccounts(request);
-    }
-
-    getAccountById(
-        request: GetAccountByIdGrpcRequest,
-    ): Promise<GetAccountByIdGrpcResponse> {
-        return this.bankingService.getAccountById(request);
-    }
-
-    getOperations(
-        request: GetOperationsGrpcRequest,
-    ): Promise<GetOperationsGrpcResponse> {
-        return this.bankingService.getOperations(request);
-    }
-
-    createOperation(
-        request: CreateOperationGrpcRequest,
-    ): Promise<CreateOperationGrpcResponse> {
-        return this.bankingService.createOperation(request);
+        return this.bankingService.GetAccounts(request);
     }
 }

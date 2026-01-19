@@ -7,19 +7,8 @@ export interface BankAccount {
     readonly createdAt: string;
 }
 
-export interface GetAccountsRequest {
-    readonly userId: number;
-}
+export interface GetAccountsRequest {}
 
 export interface GetAccountsResponse {
     readonly accounts: BankAccount[];
-}
-
-export interface GetAccountByIdRequest {
-    readonly accountId: number;
-    readonly userId: number;
-}
-
-export interface GetAccountByIdResponse {
-    readonly account: BankAccount;
 }

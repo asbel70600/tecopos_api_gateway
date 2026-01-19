@@ -11,18 +11,10 @@ import {
     HttpStatus,
 } from "@nestjs/common";
 import { BankingServiceGrpcAdapter } from "./banking.service";
-import {
-    GetAccountsHttpRequest,
-    GetAccountByIdHttpRequest,
-} from "./contracts/http/bank_account.dto";
-import {
-    GetOperationsHttpRequest,
-    CreateOperationHttpRequest,
-} from "./contracts/http/operation.dto";
+import { GetAccountsHttpRequest } from "./contracts/http/bank_account.dto";
 import { JwtAuthGuard } from "../guards/jwt-auth.guard";
 
 @Controller("banking")
-@UseGuards(JwtAuthGuard)
 export class BankingController {
     constructor(
         private readonly bankingServiceGrpc: BankingServiceGrpcAdapter,
@@ -31,57 +23,10 @@ export class BankingController {
     @Get("accounts")
     async getAccounts(@Request() req: any) {
         try {
-            const userId = req.user.sub; // Extract from JWT
-            return await this.bankingServiceGrpc.getAccounts({ userId });
+            return await this.bankingServiceGrpc.GetAccounts({});
         } catch (error: any) {
-            this.handleGrpcError(error);
-        }
-    }
-
-    @Get("accounts/:accountId")
-    async getAccountById(
-        @Param("accountId") accountId: string,
-        @Request() req: any,
-    ) {
-        try {
-            const userId = req.user.sub;
-            return await this.bankingServiceGrpc.getAccountById({
-                accountId: parseInt(accountId, 10),
-                userId,
-            });
-        } catch (error: any) {
-            this.handleGrpcError(error);
-        }
-    }
-
-    @Get("operations")
-    async getOperations(
-        @Query() query: GetOperationsHttpRequest,
-        @Request() req: any,
-    ) {
-        try {
-            const userId = req.user.sub;
-            return await this.bankingServiceGrpc.getOperations({
-                ...query,
-                userId,
-            });
-        } catch (error: any) {
-            this.handleGrpcError(error);
-        }
-    }
-
-    @Post("operations")
-    async createOperation(
-        @Body() body: CreateOperationHttpRequest,
-        @Request() req: any,
-    ) {
-        try {
-            const userId = req.user.sub;
-            return await this.bankingServiceGrpc.createOperation({
-                ...body,
-                userId,
-            });
-        } catch (error: any) {
+            console.log("ERROR");
+            console.log(error);
             this.handleGrpcError(error);
         }
     }
